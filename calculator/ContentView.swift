@@ -15,7 +15,7 @@ enum CalculatorMode{
 }
 
 struct ContentView: View {
-  @State  var currentValue = "2"
+  @State  var currentValue = "0"
   @State var currentMode : CalculatorMode = .notSet
     @State var lastButtonWasMode : Bool = false
     @State var savedNum = 0
@@ -82,6 +82,12 @@ struct ContentView: View {
     }
     func didPressClear(button : CalculatorButton){
         currentValue = "0"
+        currentMode = .notSet
+        currentValueInt = 0
+        lastButtonWasMode = false
+        savedNum = 0
+        
+        
         
     }
     func didPressEquals(button : CalculatorButton){
