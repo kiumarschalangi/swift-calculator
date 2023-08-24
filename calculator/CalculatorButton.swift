@@ -11,10 +11,11 @@ struct CalculatorButton: View {
     var buttonText : String = "1"
     var buttonColor : Color = Color(hue: 1.0, saturation: 0.0, brightness: 0.237)
     var width : CGFloat = 70
+    var action: (CalculatorButton) -> Void={_ in }
     
     var body: some View {
         Button {
-            onButtonPressed()
+            action(self)
             
         } label: {
             Text(buttonText)
@@ -28,9 +29,7 @@ struct CalculatorButton: View {
         
     }
     
-    func onButtonPressed (){
-        print("button pressed!")
-    }
+ 
 }
 
 struct CalculatorButton_Previews: PreviewProvider {

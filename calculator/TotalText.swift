@@ -14,6 +14,7 @@ struct TotalText: View {
             .font(.system(size:60))
         .padding()
         .foregroundColor(.white)
+        .lineLimit(1)
     }
 }
 

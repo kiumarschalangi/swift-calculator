@@ -8,42 +8,63 @@
 import SwiftUI
 
 struct ContentView: View {
-    
+  @State  var currentValue = "2"
     var body: some View {
         
         ZStack {
             Color(.black)
             VStack {
-                TotalText()
+                TotalText(value: currentValue)
                 HStack {
-                    CalculatorButton()
-                    CalculatorButton(buttonText: "2")
-                    CalculatorButton(buttonText: "3")
-                    CalculatorButton(buttonText: "+",buttonColor: .orange)
+                    CalculatorButton(action: didPressNumber)
+                    CalculatorButton(buttonText: "2",action: didPressNumber)
+                    CalculatorButton(buttonText: "3",action: didPressNumber)
+                    CalculatorButton(buttonText: "+",buttonColor: .orange,action: didPressMode)
                 }
             
                 HStack {
-                    CalculatorButton(buttonText: "4" )
-                    CalculatorButton(buttonText: "5")
-                    CalculatorButton(buttonText: "6")
-                    CalculatorButton(buttonText: "-",buttonColor: .orange)
+                    CalculatorButton(buttonText: "4",action: didPressNumber)
+                    CalculatorButton(buttonText: "5",action: didPressNumber)
+                    CalculatorButton(buttonText: "6",action: didPressNumber)
+                    CalculatorButton(buttonText: "-",buttonColor: .orange,action: didPressMode)
                 }
                 HStack {
-                    CalculatorButton(buttonText: "7")
-                    CalculatorButton(buttonText: "8")
-                    CalculatorButton(buttonText: "9")
-                    CalculatorButton(buttonText: "x",buttonColor: .orange)
+                    CalculatorButton(buttonText: "7",action: didPressNumber)
+                    CalculatorButton(buttonText: "8",action: didPressNumber)
+                    CalculatorButton(buttonText: "9",action: didPressNumber)
+                    CalculatorButton(buttonText: "x",buttonColor: .orange,action: didPressMode)
                 }
                 HStack {
                     
-                    CalculatorButton(buttonText: "0",width: 140)
-                    CalculatorButton(buttonText: "c",buttonColor: .gray)
-                    CalculatorButton(buttonText: "=",buttonColor: .orange)
+                    CalculatorButton(buttonText: "0",width: 140,action: didPressNumber)
+                    CalculatorButton(buttonText: "c",buttonColor: .gray,action: didPressClear)
+                    CalculatorButton(buttonText: "=",buttonColor: .orange,action: didPressEquals)
                 }
             }
            
          
         }.ignoresSafeArea()
+    }
+    func didPressNumber (button: CalculatorButton){
+        //using if statement in case we cannot parse an int value
+        if let parsedValue = Int(currentValue + button.buttonText){
+            currentValue = "\(parsedValue)"
+        }
+        else {
+            currentValue="Error!"
+        }
+        
+        
+    }
+    func didPressMode(button : CalculatorButton){
+        
+    }
+    func didPressClear(button : CalculatorButton){
+        currentValue = "0"
+        
+    }
+    func didPressEquals(button : CalculatorButton){
+        
     }
 }
 
