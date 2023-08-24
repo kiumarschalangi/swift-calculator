@@ -12,6 +12,8 @@ struct CalculatorButton: View {
     var buttonColor : Color = Color(hue: 1.0, saturation: 0.0, brightness: 0.237)
     var width : CGFloat = 70
     var action: (CalculatorButton) -> Void={_ in }
+    // CalculatorMode.notSet is equal to .notSet 
+    var mode : CalculatorMode = .notSet
     
     var body: some View {
         Button {

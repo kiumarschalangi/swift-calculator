@@ -7,8 +7,19 @@
 
 import SwiftUI
 
+enum CalculatorMode{
+    case notSet
+    case addition
+    case subtraction
+    case multiplication
+}
+
 struct ContentView: View {
   @State  var currentValue = "2"
+  @State var currentMode : CalculatorMode = .notSet
+    @State var lastButtonWasMode : Bool = false
+    @State var savedNum = 0
+    @State var currentValueInt = 0
     var body: some View {
         
         ZStack {
@@ -19,20 +30,20 @@ struct ContentView: View {
                     CalculatorButton(action: didPressNumber)
                     CalculatorButton(buttonText: "2",action: didPressNumber)
                     CalculatorButton(buttonText: "3",action: didPressNumber)
-                    CalculatorButton(buttonText: "+",buttonColor: .orange,action: didPressMode)
+                    CalculatorButton(buttonText: "+",buttonColor: .orange,action: didPressMode,mode: .addition)
                 }
             
                 HStack {
                     CalculatorButton(buttonText: "4",action: didPressNumber)
                     CalculatorButton(buttonText: "5",action: didPressNumber)
                     CalculatorButton(buttonText: "6",action: didPressNumber)
-                    CalculatorButton(buttonText: "-",buttonColor: .orange,action: didPressMode)
+                    CalculatorButton(buttonText: "-",buttonColor: .orange,action: didPressMode,mode: .subtraction)
                 }
                 HStack {
                     CalculatorButton(buttonText: "7",action: didPressNumber)
                     CalculatorButton(buttonText: "8",action: didPressNumber)
                     CalculatorButton(buttonText: "9",action: didPressNumber)
-                    CalculatorButton(buttonText: "x",buttonColor: .orange,action: didPressMode)
+                    CalculatorButton(buttonText: "x",buttonColor: .orange,action: didPressMode,mode: .multiplication)
                 }
                 HStack {
                     
@@ -46,17 +57,27 @@ struct ContentView: View {
         }.ignoresSafeArea()
     }
     func didPressNumber (button: CalculatorButton){
+        if lastButtonWasMode{
+            lastButtonWasMode=false
+            currentValueInt = 0
+            
+        }
         //using if statement in case we cannot parse an int value
-        if let parsedValue = Int(currentValue + button.buttonText){
-            currentValue = "\(parsedValue)"
+
+        if let parsedValue = Int("\(currentValueInt)"  + button.buttonText){
+            currentValueInt = parsedValue
+            updateText()
         }
         else {
             currentValue="Error!"
+            currentValueInt = 0
         }
         
         
     }
     func didPressMode(button : CalculatorButton){
+        currentMode = button.mode
+        lastButtonWasMode = true
         
     }
     func didPressClear(button : CalculatorButton){
@@ -64,6 +85,29 @@ struct ContentView: View {
         
     }
     func didPressEquals(button : CalculatorButton){
+        if currentMode == .notSet || lastButtonWasMode{
+            return
+        }
+        switch currentMode {
+        case .addition:
+            savedNum += currentValueInt
+        case .subtraction:
+            savedNum -= currentValueInt
+        case .multiplication:
+            savedNum *= currentValueInt
+        case .notSet:
+            return
+        }
+        currentValueInt = savedNum
+        updateText()
+        lastButtonWasMode=true
+        
+    }
+    func updateText(){
+        if currentMode == .notSet{
+            savedNum = currentValueInt
+        }
+        currentValue = "\(currentValueInt)"
         
     }
 }
